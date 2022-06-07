@@ -18,18 +18,10 @@ Route::get('/', [EventController::class, 'index']);
 
 Route::get('/events/create', [EventController::class, 'create'])->name('criarevento');
 
+Route::post('/events', [EventController::class, 'store']);
 
-/* Route::get('/contact', function () {
+Route::get('/contact', function () {
     return view('contact');
-}); */
+});
 
-/* Route::get('/produtos', function () {
 
-    $busca = request('search');
-
-    return view('products', ['buscaa' => $busca]);
-}); */
-
-/* Route::get('/produtos_teste/{id?}', function ($id = null) {
-    return view('product', ['idd' => $id]);
-}); */

@@ -4,42 +4,28 @@
 
 @section('content')
 
-    <h1>Algum título</h1>
-    <img src="/img/banner.jpg" alt="Banner">
-    @if (10 > 5)
-        <p>A condição é true</p>
-    @endif
-
-    <p>{{ $nomee }}</p>
-
-    @if ($nomee == 'Pedro')
-        <p>O nome é Pedro</p>
-    @elseif($nomee == 'LuizMarcello')
-        <p>O nome é {{ $nomee }} e idade de {{ $idadee }} anos, e trabalha como
-             {{ $profissaoo }}</p>
-    @else
-        <p>O nome não é pedro</p>
-    @endif
-
-    @for ($i = 0; $i < count($arrrr); $i++)
-        <p>{{ $arrrr[$i] }} - {{ $i }}</p>
-        @if ($i == 2)
-            <p>Nesse ponto o i é igual a 2</p>
-        @endif
-    @endfor
-
-    {{-- Aqui dentro será código PHP puro normal --}}
-    {{-- É possível então PHP puro no Blader --}}
-    @php
-    $name = 'João';
-    echo $name;
-    @endphp
-
-    {{-- Comentários com o blade deve ser assim --}}
-    {{-- Não aparece na view e nem é renderizado, sem perigo --}}
-    @foreach ($nomess as $nome)
-        <p>{{ $loop->index }}</p>
-        <p>{{ $nome }}</p>
-    @endforeach
+    <div id="search-container" class="col-md-12">
+        <h2>Busque um evento</h2>
+        <form action="">
+            <input type="text" id="search" name="search" class="form-control" placeholder="Procurar...">
+        </form>
+    </div>
+    <div id="events-container" class="col-md-12">
+        <h3>Próximos Eventos</h3>
+        <p class="subtitle">Veja os eventos dos próximos dias:</p>
+        <div id="cards-container" class="row">
+            @foreach ($eventts as $event)
+                <div class="card col-md-3">
+                    <img src="/img/event_placeholder.jpg" alt="{{ $event->title }}">
+                    <div class="card-body">
+                        <p class="card-date">10/09/2022</p>
+                        <h5 class="card-title">{{ $event->title }}</h5>
+                        <p class="card-participants">X Participantes</p>
+                        <a href="#" class="btn btn-primary">Saber mais</a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
 
 @endsection
