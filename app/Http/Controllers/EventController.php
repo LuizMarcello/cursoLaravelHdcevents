@@ -7,16 +7,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 
-class EventController extends Controller
- {
+class EventController extends Controller {
     /**
     * Undocumented function
     *
     * @return void
     */
 
-    public function index()
- {
+    public function index() {
         $eventss = Event::all();
         return view( 'welcome', [ 'eventts' => $eventss ] );
     }
@@ -27,8 +25,7 @@ class EventController extends Controller
     * @return void
     */
 
-    public function create()
- {
+    public function create() {
         return view( 'events.create' );
     }
 
@@ -42,15 +39,16 @@ class EventController extends Controller
     * @return void
     */
 
-    public function store( Request $request )
- {
+    public function store( Request $request ) {
         /* Instanciando o model */
         $event = new Event;
 
         $event->title = $request->title;
+        $event->date = $request->date;
         $event->city = $request->city;
         $event->private = $request->private;
         $event->description = $request->description;
+        $event->items = $request->items;
 
         /* Image upload */
         if ( $request->hasFile( 'image' ) && $request->file( 'image' )->isValid() ) {
@@ -72,8 +70,7 @@ class EventController extends Controller
     * @return void
     */
 
-    public function show( $id )
- {
+    public function show( $id ) {
         $event = Event::findOrFail( $id );
 
         return view( 'events.show', [ 'eventtt' => $event ] );

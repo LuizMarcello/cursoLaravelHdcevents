@@ -184,6 +184,16 @@ header {
     margin: 20px 0;
 }
 
+/* checkbox items de infraestrutura*/
+#items-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+#items-list li {
+    display: flex;
+}
+
 /* footer */
 footer {
     text-align: center;
