@@ -11,7 +11,21 @@
                 <img src="/img/events/{{ $eventtt->image }}" class="img-fluid" alt="{{ $eventtt->title }}">
             </div>
             <div id="info-container" class="col-md-6">
-                <h1>{{ $eventtt->title }}</h1>
+                <h3>{{ $eventtt->title }}</h3>
+                <p class="event-city">
+                    <ion-icon name="location-outline"></ion-icon>{{ $eventtt->city }}
+                </p>
+                <p class="events-participants">
+                    <ion-icon name="people-outline"></ion-icon>X Participantes
+                </p>
+                <p class="event-owner">
+                    <ion-icon name="star-outline"></ion-icon>Dono do evento
+                </p>
+                <a href="#" class="btn btn-primary" id="event-submit">Confirmar presença</a>
+            </div>
+            <div class="col-md-12" id="description-container">
+                <h3>Sobre o evento:</h3>
+                <p class="event-description">{{ $eventtt->description }}</p>
             </div>
         </div>
     </div>

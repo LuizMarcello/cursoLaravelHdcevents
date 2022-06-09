@@ -7,13 +7,15 @@
 
     <title>@yield('title')</title>
 
+
+
     {{-- Fonte do google --}}
     <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
 
     {{-- CSS Bootstrap --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
-        crossorigin="anonymous">
+ crossorigin="anonymous">
 
     {{-- CSS local da aplicação --}}
     <link rel="stylesheet" href="/css/styles.css">
@@ -58,7 +60,8 @@
     <footer>
         <p>HDC Events &copy; 2022</p>
     </footer>
-    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

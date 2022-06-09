@@ -147,6 +147,44 @@ header {
     font-size: 12px;
 }
 
+/* Event page */
+#image-container,
+#info-container {
+    margin-top: 30px;
+}
+
+#image-container img {
+    border-radius: 7px;
+}
+
+#info-container h1 {
+    font-size: 33px;
+    font-weight: 700;
+}
+
+#info-container p {
+    margin: 0;
+    font-size: 14px;
+    display: flex;
+}
+
+#info-container h3,
+#description-container h3 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#info-container ion-icon {
+    font-size: 18px;
+    color: #F2A340;
+    margin-right: 5px;
+}
+
+#info-container #event-submit {
+    margin: 20px 0;
+}
+
+/* footer */
 footer {
     text-align: center;
     background-color: #353E48;
