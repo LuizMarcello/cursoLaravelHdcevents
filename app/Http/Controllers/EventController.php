@@ -9,22 +9,36 @@ use App\Models\Event;
 
 class EventController extends Controller
 {
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function index()
     {
         $eventss = Event::all();
         return view('welcome', ['eventts' => $eventss]);
     }
 
-    /* Esta 'action' só retorna a view create.blade.php */
-
+    /**
+     * Esta 'action' só retorna a view create.blade.php(Formulário)
+     *
+     * @return void
+     */
     public function create()
     {
         return view('events.create');
     }
 
-    /* Esta 'action' então persiste no bd */
-    /* with(): Para enviar "flash messages" ou "mensagens
-       por sessão" para a view. */
+    /**
+     * Esta 'action' então persiste no bd
+     *
+     * with(): Para enviar "flash messages" ou "mensagens
+     * por sessão" para a view.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function store(Request $request)
     {
         /* Instanciando o model */
@@ -47,5 +61,17 @@ class EventController extends Controller
         $event->save();
 
         return redirect('/')->with('msg', 'Evento criado com sucesso!');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function show($id)
+    {
+        $event = Event::findOrFail($id);
+
+        return view('events.show', ['eventtt' => $event]);
     }
 }
