@@ -7,39 +7,54 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 
-class EventController extends Controller {
+class EventController extends Controller
+{
     /**
-    * Undocumented function
-    *
-    * @return void
-    */
+     * Undocumented function
+     *
+     * @return void
+     */
 
-    public function index() {
-        $eventss = Event::all();
-        return view( 'welcome', [ 'eventts' => $eventss ] );
+    public function index()
+    { /* Em "welcome.blade.php", no "form", o atributo "name=search",
+         ou seja, se foi enviado alguma pesquisa. */
+        $search = request('search');
+
+        if ($search) {
+            /* A lógica das buscas */
+            $eventss = Event::where([
+                ['title', 'like', '%' . $search . '%']
+            ])->get();
+        } else {
+            $eventss = Event::all();
+        }
+
+        return view('welcome', ['eventts' => $eventss, 'searchh' => $search]);
     }
 
     /**
-    * Esta 'action' só retorna a view create.blade.php( Formulário )
-    *
-    * @return void
-    */
+     * Esta 'action' só retorna a view create.blade.php( Formulário )
+     *
+     * @return void
+     */
 
-    public function create() {
-        return view( 'events.create' );
+    public function create()
+    {
+        return view('events.create');
     }
 
     /**
-    * Esta 'action' então persiste no bd
-    *
-    * with(): Para enviar 'flash messages' ou "mensagens
+     * Esta 'action' então persiste no bd
+     *
+     * with(): Para enviar 'flash messages' ou "mensagens
      * por sessão" para a view.
-    *
-    * @param Request $request
-    * @return void
-    */
+     *
+     * @param Request $request
+     * @return void
+     */
 
-    public function store( Request $request ) {
+    public function store(Request $request)
+    {
         /* Instanciando o model */
         $event = new Event;
 
@@ -51,28 +66,30 @@ class EventController extends Controller {
         $event->items = $request->items;
 
         /* Image upload */
-        if ( $request->hasFile( 'image' ) && $request->file( 'image' )->isValid() ) {
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $requestImage = $request->image;
             $extension = $requestImage->extension();
-            $imageName = md5( $requestImage->getClientOriginalName() . strtotime( 'now' ) ) . '.' . $extension;
-            $requestImage->move( public_path( 'img/events' ), $imageName );
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) .
+                '.' . $extension;
+            $requestImage->move(public_path('img/events'), $imageName);
             $event->image = $imageName;
         }
 
         $event->save();
 
-        return redirect( '/' )->with( 'msg', 'Evento criado com sucesso!' );
+        return redirect('/')->with('msg', 'Evento criado com sucesso!');
     }
 
     /**
-    * Undocumented function
-    *
-    * @return void
-    */
+     * Undocumented function
+     *
+     * @return void
+     */
 
-    public function show( $id ) {
-        $event = Event::findOrFail( $id );
+    public function show($id)
+    {
+        $event = Event::findOrFail($id);
 
-        return view( 'events.show', [ 'eventtt' => $event ] );
+        return view('events.show', ['eventtt' => $event]);
     }
 }

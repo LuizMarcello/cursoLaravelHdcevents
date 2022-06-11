@@ -39,14 +39,24 @@
                             <a href="/dashboard" class="nav-link">Meus eventos</a>
                         </li>
                         <li class="nav-item">
+
                             <form action="/logout" method="POST">
                                 @csrf
-                                {{-- @method('POST') --}}
                                 <a href="/logout" class="nav-link" onclick="event.preventDeFault();
-                                               this.closest('form').submit();">
+                                                           this.closest('form').submit();">
                                     Sair
                                 </a>
                             </form>
+
+                           {{--  <form method="POST" action="{{ route('logout') }}" x-data>
+                                @csrf
+
+                                <x-jet-dropdown-link href="{{ route('logout') }}"
+                                         @click.prevent="$root.submit();">
+                                    {{ __('Log Out') }}
+                                </x-jet-dropdown-link>
+                            </form> --}}
+
                         </li>
                     @endauth
                     {{-- @guest/@endguest: Se estiver autenticado, estas opções somem da tela --}}
