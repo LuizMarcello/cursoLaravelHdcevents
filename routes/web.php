@@ -16,7 +16,10 @@ use App\Http\Controllers\EventController;
 
 Route::get('/', [EventController::class, 'index']);
 
-Route::get('/events/create', [EventController::class, 'create'])->name('criarevento');
+/* Acrescentando o "middleware auth" nesta rota. Assim
+   criará um evento somente quando estiver autenticado. */
+Route::get('/events/create', [EventController::class, 'create'])
+    ->name('criarevento')->middleware('auth');
 
 Route::get('/events/{id}', [EventController::class, 'show']);
 

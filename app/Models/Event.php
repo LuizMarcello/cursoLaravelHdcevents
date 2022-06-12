@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Event extends Model
 {
@@ -12,4 +13,11 @@ class Event extends Model
     protected $casts = ['items' => 'array'];
 
     protected $dates = ['date'];
+
+    /* Relacionamento de EVENTOS com USER(PROPRIETÀRIO): */
+    /* No singular, porque os EVENTOS podem ter um só USER(PROPRIETÀRIO) */
+    public function user()
+    {   /* Um EVENTO pertence a um USER(PROPRIETÀRIO) */
+        return $this->BelongsTo('App\Models\User');
+    }
 }

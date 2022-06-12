@@ -43,12 +43,12 @@
                             <form action="/logout" method="POST">
                                 @csrf
                                 <a href="/logout" class="nav-link" onclick="event.preventDeFault();
-                                                           this.closest('form').submit();">
+                                                               this.closest('form').submit();">
                                     Sair
                                 </a>
                             </form>
 
-                           {{--  <form method="POST" action="{{ route('logout') }}" x-data>
+                            {{-- <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
 
                                 <x-jet-dropdown-link href="{{ route('logout') }}"

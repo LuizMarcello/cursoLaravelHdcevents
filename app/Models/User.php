@@ -58,4 +58,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /* Relacionamento de USER(PROPRIETÀRIO) com EVENTOS: */
+    /* No plural, porque os USERS podem ser proprietários de vários eventos. */
+    public function events()
+    {  /* Um USER(PROPRIETÀRIO) pode ter vários eventos */
+        return $this->hasMany('App\Models\Event');
+    }
 }
