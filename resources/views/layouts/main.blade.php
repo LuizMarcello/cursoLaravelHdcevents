@@ -35,28 +35,25 @@
                     </li>
                     {{-- @auth/@endauth: Se estiver autenticado no sistema --}}
                     @auth
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <a href="/dashboard" class="nav-link">Meus eventos</a>
                         </li>
-                        <li class="nav-item">
 
-                            <form action="/logout" method="POST">
+                        <li class="nav-item ">
+                            <a href="{{ route('logoff') }}" class="nav-link">Usuário</a>
+                        </li>
+
+                        <li class="nav-item nav-link">
+
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                Sair
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
-                                <a href="/logout" class="nav-link" onclick="event.preventDeFault();
-                                                               this.closest('form').submit();">
-                                    Sair
-                                </a>
                             </form>
-
-                            {{-- <form method="POST" action="{{ route('logout') }}" x-data>
-                                @csrf
-
-                                <x-jet-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
-                                    {{ __('Log Out') }}
-                                </x-jet-dropdown-link>
-                            </form> --}}
-
+                          
                         </li>
                     @endauth
                     {{-- @guest/@endguest: Se estiver autenticado, estas opções somem da tela --}}

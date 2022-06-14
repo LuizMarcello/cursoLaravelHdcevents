@@ -102,4 +102,22 @@ class EventController extends Controller
 
         return view('events.show', ['eventtt' => $event, 'eventOwnerrr' => $eventOwner]);
     }
+
+    public function dashboard()
+    {
+        /* Pegando o usuário que está autenticado no momento */
+        $user = auth()->user();
+
+        /* Pegando todos os eventos que este usuário autenticado é proprietário */
+        /* Usando a função "events()" do model User.php */
+        $events = $user->events;
+
+        /* Retornando a view, e todos os eventos que pertencem a este usuário */
+        return view('events.dashboard', ['eventtts' => $events]);
+    }
+
+    public function logoff()
+    {
+        return view('usuarioLogado');
+    }
 }

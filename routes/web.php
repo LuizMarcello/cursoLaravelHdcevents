@@ -29,7 +29,10 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::middleware([
+/* Action "dashboard" deste controller */
+Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware('auth');
+
+/* Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
@@ -37,4 +40,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-});
+}); */
+
+/* Route::get('/usuarioLogado', function () {
+    return view('usuarioLogado');
+}); */
+
+Route::get('/usuariologado', [EventController::class, 'logoff'])->name('logoff');
