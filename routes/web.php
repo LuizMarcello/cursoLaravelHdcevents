@@ -25,25 +25,15 @@ Route::get('/events/{id}', [EventController::class, 'show']);
 
 Route::post('/events', [EventController::class, 'store']);
 
+Route::delete('/events/{id}', [EventController::class, 'destroy']);
+
+
+
 Route::get('/contact', function () {
     return view('contact');
 });
 
 /* Action "dashboard" deste controller */
 Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware('auth');
-
-/* Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-}); */
-
-/* Route::get('/usuarioLogado', function () {
-    return view('usuarioLogado');
-}); */
 
 Route::get('/usuariologado', [EventController::class, 'logoff'])->name('logoff');
