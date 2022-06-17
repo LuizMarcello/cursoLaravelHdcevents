@@ -8,51 +8,55 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\User;
 
-class EventController extends Controller {
+class EventController extends Controller
+{
     /**
-    * Undocumented function
-    *
-    * @return void
-    */
+     * Undocumented function
+     *
+     * @return void
+     */
 
-    public function index() {
+    public function index()
+    {
         /* Em 'welcome.blade.php', no 'form', o atributo 'name=search',
         ou seja, se foi enviado alguma pesquisa. */
-        $search = request( 'search' );
+        $search = request('search');
 
-        if ( $search ) {
+        if ($search) {
             /* A lógica das buscas */
-            $eventss = Event::where( [
-                [ 'title', 'like', '%' . $search . '%' ]
-            ] )->get();
+            $eventss = Event::where([
+                ['title', 'like', '%' . $search . '%']
+            ])->get();
         } else {
             $eventss = Event::all();
         }
 
-        return view( 'welcome', [ 'eventts' => $eventss, 'searchh' => $search ] );
+        return view('welcome', ['eventts' => $eventss, 'searchh' => $search]);
     }
 
     /**
-    * Esta 'action' só retorna a view create.blade.php( Formulário )
-    *
-    * @return void
-    */
+     * Esta 'action' só retorna a view create.blade.php( Formulário )
+     *
+     * @return void
+     */
 
-    public function create() {
-        return view( 'events.create' );
+    public function create()
+    {
+        return view('events.create');
     }
 
     /**
-    * Esta 'action' então, após o create(). persiste no bd
-    *
-    * with(): Para enviar 'flash messages' ou "mensagens
+     * Esta 'action' então, após o create(). persiste no bd
+     *
+     * with(): Para enviar 'flash messages' ou "mensagens
      * por sessão" para a view.
-    *
-    * @param Request $request
-    * @return void
-    */
+     *
+     * @param Request $request
+     * @return void
+     */
 
-    public function store( Request $request ) {
+    public function store(Request $request)
+    {
         /* Instanciando o model */
         $event = new Event;
 
@@ -64,12 +68,12 @@ class EventController extends Controller {
         $event->items = $request->items;
 
         /* Image upload */
-        if ( $request->hasFile( 'image' ) && $request->file( 'image' )->isValid() ) {
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $requestImage = $request->image;
             $extension = $requestImage->extension();
-            $imageName = md5( $requestImage->getClientOriginalName() . strtotime( 'now' ) ) .
-            '.' . $extension;
-            $requestImage->move( public_path( 'img/events' ), $imageName );
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) .
+                '.' . $extension;
+            $requestImage->move(public_path('img/events'), $imageName);
             $event->image = $imageName;
         }
 
@@ -81,25 +85,27 @@ class EventController extends Controller {
 
         $event->save();
 
-        return redirect( '/' )->with( 'msg', 'Evento criado com sucesso!' );
+        return redirect('/')->with('msg', 'Evento criado com sucesso!');
     }
 
     /**
-    * Undocumented function
-    *
-    * @return void
-    */
+     * Undocumented function
+     *
+     * @return void
+     */
 
-    public function show( $id ) {
-        $event = Event::findOrFail( $id );
+    public function show($id)
+    {
+        $event = Event::findOrFail($id);
 
         /* Usando o 'where()', do 'eloquent orm' */
-        $eventOwner = User::where( 'id', $event->user_id )->first()->toArray();
+        $eventOwner = User::where('id', $event->user_id)->first()->toArray();
 
-        return view( 'events.show', [ 'eventtt' => $event, 'eventOwnerrr' => $eventOwner ] );
+        return view('events.show', ['eventtt' => $event, 'eventOwnerrr' => $eventOwner]);
     }
 
-    public function dashboard() {
+    public function dashboard()
+    {
         /* Pegando o usuário que está autenticado no momento */
         $user = auth()->user();
 
@@ -108,59 +114,82 @@ class EventController extends Controller {
         $events = $user->events;
 
         /* Retornando a view, e todos os eventos que pertencem a este usuário */
-        return view( 'events.dashboard', [ 'eventtts' => $events ] );
+        return view('events.dashboard', ['eventtts' => $events]);
     }
 
-    public function logoff() {
-        return view( 'usuarioLogado' );
-    }
-
-    /**
-    *
-    * Deletando o evento
-    */
-
-    public function destroy( $id ) {
-        Event::findOrFail( $id )->delete();
-
-        return redirect( '/dashboard' )->with( 'msg', 'Evento excluído com sucesso!' );
+    public function logoff()
+    {
+        return view('usuarioLogado');
     }
 
     /**
-    *
-    * Editando o evento
-    * Trás a view com o formulário de edição, com os dados a serem alterados.
-    */
+     *
+     * Deletando o evento
+     */
 
-    public function edit ( $id ) {
+    public function destroy($id)
+    {
+        Event::findOrFail($id)->delete();
 
-        $event = Event::findOrFail( $id );
-
-        return view( 'events.edit', [ 'evennnt' => $event ] );
+        return redirect('/dashboard')->with('msg', 'Evento excluído com sucesso!');
     }
 
     /**
-    *
-    * Persistindo as alterações no bd
-    */
+     *
+     * Editando o evento
+     * Trás a view com o formulário de edição, com os dados a serem alterados.
+     */
 
-    public function update ( Request $request ) {
+    public function edit($id)
+    {
+
+        $event = Event::findOrFail($id);
+
+        return view('events.edit', ['evennnt' => $event]);
+    }
+
+    /**
+     *
+     * Persistindo as alterações no bd
+     */
+
+    public function update(Request $request)
+    {
 
         $data = $request->all();
 
         /* Image upload */
-        if ( $request->hasFile( 'image' ) && $request->file( 'image' )->isValid() ) {
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $requestImage = $request->image;
             $extension = $requestImage->extension();
-            $imageName = md5( $requestImage->getClientOriginalName() . strtotime( 'now' ) ) .
-            '.' . $extension;
-            $requestImage->move( public_path( 'img/events' ), $imageName );
-            $data[ 'image' ] = $imageName;
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) .
+                '.' . $extension;
+            $requestImage->move(public_path('img/events'), $imageName);
+            $data['image'] = $imageName;
         }
 
-        Event::findOrFail( $request->id )->update( $data );
+        Event::findOrFail($request->id)->update($data);
 
-        return redirect( '/dashboard' )->with( 'msg', 'Evento editado com sucesso!' );
+        return redirect('/dashboard')->with('msg', 'Evento editado com sucesso!');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function joinEvent($id)
+    {
+        /* Pegando o usuário que está autenticado no momento */
+        $user = auth()->user();
+
+        /* Unindo o usuário autenticado ao evento com este ID (attach() */
+        $user->eventsAsParticipant()->attach($id);
+
+        /* Localizando o evento no bd */
+        $event = Event::findOrFail($id);
+
+        return redirect('/dashboard')->with('msg', 'Sua presença está confirmada no evento ' . $event->title);
+    }
 }

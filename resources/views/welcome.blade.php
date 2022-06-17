@@ -24,7 +24,7 @@
                         {{-- strtotime() é o timestamp --}}
                         <p class="card-date">Em {{ date('d/m/Y', strtotime($event->date)) }}</p>
                         <h5 class="card-title">{{ $event->title }}</h5>
-                        <p class="card-participants">X Participantes</p>
+                        <p class="card-participants"> {{ count($event->users) }} Participante(s) inscrito(s)</p>
                         <a href="/events/{{ $event->id }}" class="btn btn-primary">Saber mais</a>
                     </div>
                 </div>

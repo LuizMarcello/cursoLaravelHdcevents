@@ -61,8 +61,16 @@ class User extends Authenticatable
 
     /* Relacionamento de USER(PROPRIETÀRIO) com EVENTOS: */
     /* No plural, porque os USERS podem ser proprietários de vários eventos. */
+    /* Relacionamento ONE to MANY */
     public function events()
     {  /* Um USER(PROPRIETÀRIO) pode ter vários eventos */
         return $this->hasMany('App\Models\Event');
+    }
+
+    /* Relacionamento de USERS com EVENTOS: */
+    /* No plural, porque os USERS podem ter vários EVENTOS. */
+    public function eventsAsParticipant()
+    {  /* Um USER pode ter vários EVENTOS */
+        return $this->belongsToMany('App\Models\Event');
     }
 }
