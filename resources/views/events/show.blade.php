@@ -17,21 +17,29 @@
                 </p>
                 <p class="events-participants">
                     <ion-icon name="people-outline"></ion-icon> {{ count($eventtt->users) }}
-                     participante(s) inscrito(s)
+                    participante(s) inscrito(s)
                 </p>
                 <p class="event-owner">
                     <ion-icon name="star-outline"></ion-icon>{{ $eventOwnerrr['name'] }}
                 </p>
-                <form action="/events/join/{{ $eventtt->id }}" method="POST">
-                    @csrf
-                    <a href="/events/join/{{ $eventtt->id }}" class="btn btn-primary" id="event-submit"
-                        {{-- Sem o botão "submit" do formulário --}}
-                        onclick="event .preventDefault();
-                         this.closest('form').submit();">
-                        Confirmar presença
-                    </a>
-                    {{-- <input type="submit" class="btn btn-primary" value="Confirmar presença"> --}}
-                </form>
+
+                {{-- Veriricando antes de confirmar presença, se ele já
+                     participa do evento --}}
+                @if (!$hasUserJoiiined)
+                    <form action="/events/join/{{ $eventtt->id }}" method="POST">
+                        @csrf
+                        <a href="/events/join/{{ $eventtt->id }}" class="btn btn-primary" id="event-submit"
+                            {{-- Sem o botão "submit" do formulário --}}
+                            onclick="event .preventDefault();
+                            this.closest('form').submit();">
+                            Confirmar presença
+                        </a>
+                        {{-- <input type="submit" class="btn btn-primary" value="Confirmar presença"> --}}
+                    </form>
+                @else
+                    <p class="already-joined-msg">Você está participando deste evento!</p>
+                @endif
+
                 <h3>O evento conta com:</h3>
                 <ul id="items-list">
                     @foreach ($eventtt->items as $item)

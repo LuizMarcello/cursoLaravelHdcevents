@@ -98,10 +98,35 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
+        /* Pegando o usuário que está autenticado no momento */
+        $user = auth()->user();
+        $hasUserJoined = false;
+
+        /* Se o usuário está autenticado */
+        if ($user) {
+            /* Pegando todos os eventos que este usuário participa */
+            $userEvents = $user->eventsAsParticipant->toArray();
+
+            foreach ($userEvents as $userEveeent) {
+                /* Se o id dos eventos os quais o usuário já participa é
+                   igual ao id do evento que vem do request */
+                if ($userEveeent['id'] == $id)
+                    /* Se for true, então ele já participa deste evento */
+                    $hasUserJoined = true;
+            }
+        }
+
         /* Usando o 'where()', do 'eloquent orm' */
+        /* Pegando o proprietário do evento */
         $eventOwner = User::where('id', $event->user_id)->first()->toArray();
 
-        return view('events.show', ['eventtt' => $event, 'eventOwnerrr' => $eventOwner]);
+        /* Retornando a view "show", junto o evento em questão cfe. id no request,
+           também o proprietário do evento, e também os eventos os quais ele já
+           participa   */
+        return view('events.show', [
+            'eventtt' => $event, 'eventOwnerrr' => $eventOwner,
+            'hasUserJoiiined' => $hasUserJoined
+        ]);
     }
 
     public function dashboard()
@@ -113,8 +138,16 @@ class EventController extends Controller
         /* Usando a função 'events()' do model User.php */
         $events = $user->events;
 
-        /* Retornando a view, e todos os eventos que pertencem a este usuário */
-        return view('events.dashboard', ['eventtts' => $events]);
+        /* Pegando todos os eventos que este usuário participa */
+        /* Usando a função "eventsAsParticipant()" do model User.php */
+        $eventsAsParticipant = $user->eventsAsParticipant;
+
+        /* Retornando a view, todos os eventos que pertencem a este usuário,
+           e tbem todos os eventos os quais ele participa */
+        return view('events.dashboard', [
+            'eventtts' => $events,
+            'eventsAsParticipannnt' => $eventsAsParticipant
+        ]);
     }
 
     public function logoff()
@@ -142,8 +175,14 @@ class EventController extends Controller
 
     public function edit($id)
     {
+        /* Pegando o usuário que está autenticado no momento */
+        $user = auth()->user();
 
         $event = Event::findOrFail($id);
+
+        if ($user->id != $event->user_id) {
+            return redirect('/dashboard');
+        }
 
         return view('events.edit', ['evennnt' => $event]);
     }
@@ -174,7 +213,7 @@ class EventController extends Controller
     }
 
     /**
-     * Undocumented function
+     * Unindo o usuário ao evento específico
      *
      * @param [type] $id
      * @return void
@@ -184,12 +223,34 @@ class EventController extends Controller
         /* Pegando o usuário que está autenticado no momento */
         $user = auth()->user();
 
-        /* Unindo o usuário autenticado ao evento com este ID (attach() */
+        /* Unindo(ligando) o usuário autenticado ao evento ID (attach() */
+        /* Ligando chave estrangeira */
         $user->eventsAsParticipant()->attach($id);
 
         /* Localizando o evento no bd */
         $event = Event::findOrFail($id);
 
         return redirect('/dashboard')->with('msg', 'Sua presença está confirmada no evento ' . $event->title);
+    }
+
+    /**
+     * Não vai mais participar do evento específico
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function leaveEvent($id)
+    {
+        /* Pegando o usuário que está autenticado no momento */
+        $user = auth()->user();
+
+        /* Retirando a ligação do usuário autenticado com o evento ID (detach() */
+        /* Retirando chave estrangeira */
+        $user->eventsAsParticipant()->detach($id);
+
+        /* Localizando o evento no bd, para enviar mensagem */
+        $event = Event::findOrFail($id);
+
+        return redirect('/dashboard')->with('msg', 'Vocé saiu com sucesso do evento ' . $event->title);
     }
 }
